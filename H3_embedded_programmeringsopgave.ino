@@ -5,19 +5,25 @@
 #include <Adafruit_SSD1306.h>
 #include "RTClib.h"
 
-RTC_DS3231 rtc;
-
-char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
+// ######## OLED ########
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-String myStr = "Hello, world!";
-DateTime currentTime;
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET 4 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+// ###### OLED end ######
+
+// ######## RTC ########
+RTC_DS3231 rtc;
+char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}; // Day of the week, that matches the index from the clock module
+// ###### RTC end ######
+
+
+// ## Other variables ##
+String myStr = "Hello, world!";
+
+DateTime currentTime; // Stores the time read from the clock module
 
 void setup() 
 {
@@ -34,12 +40,8 @@ void loop()
   serialPrintDateTime();
 
 	display.clearDisplay();
-
-	display.setTextSize(1); // Normal 1:1 pixel scale
-	display.setTextColor(WHITE); // Draw white text
-  int offset = (SCREEN_WIDTH / 2 ) - (myStr.length()*6 / 2);
-	display.setCursor(offset,0); // Start at top-left corner
-	display.println(myStr);
+  
+  displayDateTime();
 
 	display.display();
 	delay(2000);
@@ -62,23 +64,36 @@ void setupRTC(){
   }
 
   // lostPowerAdjustRTCTime();
-  rtc.adjust(DateTime(2023, 6, 7, 13, 4, 0));
-}
-
-void lostPowerAdjustRTCTime(){
-  if (rtc.lostPower()) {
-    Serial.println("RTC lost power, let's set the time!");
-    // When time needs to be set on a new device, or after a power loss, the
-    // following line sets the RTC to the date & time this sketch was compiled
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    // This line sets the RTC with an explicit date & time, for example to set
-    // January 21, 2014 at 3am you would call:
-    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
-  }
+  // rtc.adjust(DateTime(2023, 6, 7, 13, 4, 0));
 }
 
 void getRTCTime(){
   currentTime = rtc.now();
+}
+
+void displayDateTime(){
+  char str[32];
+  sprintf(str, "%02d/%02d/%02d", currentTime.year(), currentTime.month(), currentTime.day());
+  displayTextCenter(str, 0, 0, 2);
+  sprintf(str, "%02d:%02d:%02d",  currentTime.hour(), currentTime.minute(), currentTime.second());
+  displayTextCenter(str, 0, 20, 2);
+}
+
+void displayTextCenter(char str[], int x, int y, int textSize){
+  display.setTextSize(textSize); // Normal 1:1 pixel scale
+	display.setTextColor(WHITE); // Draw white text
+  int offset = getOffset(str, &x, &textSize);
+	display.setCursor(offset,y); // Start at top-left corner
+	display.println(str);
+}
+
+int getOffset(char str[], int *width, int *textSize){
+  // We fist calculate the midle of the area
+  // then we take the text size and multiply the size by 6, because 1 = 6 pixels
+  // when we have pixel by char, the we multiply the string length with the pixels
+  // then we divide by 2, to get the middle of the word, and then we extract that
+  // from the screen area, we extract the string middle, and get the offset.
+  return ((SCREEN_WIDTH - *width) / 2 ) - (strlen(str)*(6*(*textSize)) / 2);
 }
 
 void serialPrintDateTime(){
