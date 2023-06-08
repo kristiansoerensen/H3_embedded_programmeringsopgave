@@ -284,6 +284,12 @@ void displayAdjustClock() {
   display.setCursor(0,10);
   display.setTextSize(2);
   for (int i = 0; i < 3; i++){
+    // if (i == clockFieldSelected){
+    //   display.setTextColor(BLACK);
+    // }
+    // else {
+    //   display.setTextColor(WHITE);
+    // }
     sprintf(str, "%02d", adjustTimeValues[i]);
     display.print(str);
     if (i < 2){
@@ -299,6 +305,12 @@ void displayAdjustClock() {
   display.setCursor(0,45);
 
   for (int i = 3; i < 6; i++){
+    // if (i == clockFieldSelected){
+    //   display.setTextColor(BLACK);
+    // }
+    // else {
+    //   display.setTextColor(WHITE);
+    // }
     sprintf(str, "%02d", adjustTimeValues[i]);
     display.print(str);
     if (i < 5){
