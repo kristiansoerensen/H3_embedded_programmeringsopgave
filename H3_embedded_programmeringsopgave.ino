@@ -4,6 +4,12 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "RTClib.h"
+#include "DHT.h"
+
+#define DHTPIN 2     // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT11   // DHT 11
+// Initialize DHT sensor.
+DHT dht(DHTPIN, DHTTYPE);
 
 // ######## OLED ########
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -25,6 +31,22 @@ String myStr = "Hello, world!";
 
 DateTime currentTime; // Stores the time read from the clock module
 
+float tempC;
+float humidity;
+
+int updateDatetimeDelay = 1000; // milli Seconds
+unsigned int lastDateTimeUpdate = 0;
+
+int updateDisplayDelay = 1000; // milli Seconds
+unsigned int lastDisplayUpdate = 0;
+
+int updateDHTDelay = 1000; // milli Seconds
+unsigned int lastDHTUpdate = 0;
+
+int updateDisplayStateDelay = 3000; // milli Seconds
+unsigned int lastDisplayStateUpdate = 0;
+bool stateDisplay = false;
+
 void setup() 
 {
 	Serial.begin(9600);
@@ -32,19 +54,18 @@ void setup()
   setupDisplay();
 
   setupRTC();
+
+  dht.begin();
 }
 
 void loop() 
 {
-  getRTCTime();
-  serialPrintDateTime();
+  updateLastDateTime();
+  // serialPrintDateTime();
 
-	display.clearDisplay();
-  
-  displayDateTime();
+  updateDHTData();
 
-	display.display();
-	delay(2000);
+	updateDisplay();
 }
 
 void setupDisplay(){
@@ -67,16 +88,63 @@ void setupRTC(){
   // rtc.adjust(DateTime(2023, 6, 7, 13, 4, 0));
 }
 
-void getRTCTime(){
-  currentTime = rtc.now();
+void updateDisplay() {
+  if ((millis() - lastDisplayStateUpdate) > updateDisplayStateDelay) {
+    lastDisplayStateUpdate = millis();
+    stateDisplay = !stateDisplay;
+    Serial.println(stateDisplay);
+  }
+  if ((millis() - lastDisplayUpdate) > updateDisplayDelay) {
+    lastDisplayUpdate = millis();
+    if (stateDisplay) {
+      displayDateTime();
+    }
+    else {
+      displayDHTData();
+    }
+    // displayDateTime();
+
+    // displayDHTData();
+  }
+}
+
+void updateDHTData(){
+  if ((millis() - lastDHTUpdate) > updateDHTDelay) {
+    lastDHTUpdate = millis();
+    tempC = dht.readTemperature();        // Read temperature
+	  humidity = dht.readHumidity();           // Read humidity
+  }
+}
+
+void updateLastDateTime() {
+  if ((millis() - lastDateTimeUpdate) > updateDatetimeDelay) {
+    lastDateTimeUpdate = millis();
+    currentTime = rtc.now();
+  }
+}
+
+void displayDHTData(){
+  display.clearDisplay();
+  char str[] = "";
+  displayTextCenter("Temperature", 0, 0, 1);
+  sprintf(str, "%d,%02dC", (int)tempC, (int)(tempC*100)%100);
+  displayTextCenter(str, 0, 10, 2);
+
+  displayTextCenter("Humidity", 0, 35, 1);
+  sprintf(str, "%d", (int)humidity);
+  Serial.println(str);
+  displayTextCenter(str, 0, 45, 2);
+  display.display();
 }
 
 void displayDateTime(){
+  display.clearDisplay();
   char str[32];
   sprintf(str, "%02d/%02d/%02d", currentTime.year(), currentTime.month(), currentTime.day());
   displayTextCenter(str, 0, 0, 2);
   sprintf(str, "%02d:%02d:%02d",  currentTime.hour(), currentTime.minute(), currentTime.second());
   displayTextCenter(str, 0, 20, 2);
+  display.display();
 }
 
 void displayTextCenter(char str[], int x, int y, int textSize){
