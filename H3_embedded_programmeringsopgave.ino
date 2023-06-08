@@ -72,6 +72,10 @@ bool stateDisplay = false;
 int updateDisplayDelay = 1000; // milli Seconds
 unsigned int lastDisplayUpdate = 0;
 
+char *adjustTimeFields[] = {"Day", "Month", "Year", "Hour", "Minutes", "Seconds"};
+int adjustTimeValues[] = {1, 1, 2023, 0, 0, 0};
+int clockFieldSelected = 0;
+
 void setup() {
   setupDisplay();
 
@@ -149,7 +153,7 @@ void displayClock() {
   display.clearDisplay();
   char str[32];
   displayTextCenter("Date", 0, 0, 1);
-  sprintf(str, "%02d/%02d/%02d", currentTime.year(), currentTime.month(), currentTime.day());
+  sprintf(str, "%02d/%02d/%02d", currentTime.day(), currentTime.month(), currentTime.year());
   displayTextCenter(str, 0, 10, 2);
   displayTextCenter("Time", 0, 35, 1);
   sprintf(str, "%02d:%02d:%02d",  currentTime.hour(), currentTime.minute(), currentTime.second());
@@ -269,12 +273,38 @@ void DHT11AndClock(){
   }
 }
 void displayAdjustClock() {
+  char str[32];
   checkAdjustClock();
   display.clearDisplay();
   display.setTextSize(1); // Normal 1:1 pixel scale
 	display.setTextColor(WHITE); // Draw white text
-  display.setCursor(10,20);
-  display.println("displayAdjustClock");
+
+  display.setCursor(0,0);
+  display.print("Date:");
+  display.setCursor(0,10);
+  display.setTextSize(2);
+  for (int i = 0; i < 3; i++){
+    sprintf(str, "%02d", adjustTimeValues[i]);
+    display.print(str);
+    if (i < 2){
+      display.print("/");
+    } 
+  }
+
+  display.setTextSize(1);
+  display.setCursor(0,35);
+  display.print("Time:");
+
+  display.setTextSize(2);
+  display.setCursor(0,45);
+
+  for (int i = 3; i < 6; i++){
+    sprintf(str, "%02d", adjustTimeValues[i]);
+    display.print(str);
+    if (i < 5){
+      display.print(":");
+    } 
+  }
   display.display();
 }
 
@@ -285,20 +315,76 @@ void checkAdjustClock(){
     inAdjustClock = false;
     inMainMenu = true;
     btn1Pressed = false;
+    rtc.adjust(DateTime(adjustTimeValues[2], adjustTimeValues[1], adjustTimeValues[0], adjustTimeValues[3], adjustTimeValues[4], adjustTimeValues[5]));
+    clockFieldSelected = 0; // reset field
   }
   if (btn2Pressed)
   {
+    clockFieldSelected++;
+    if (clockFieldSelected > 5){
+      clockFieldSelected=0;
+    }
     Serial.println("Button2 was pressed");
     btn2Pressed = false;
   }
   if (btn3Pressed)
   {
+    adjustTimeValues[clockFieldSelected] = adjustTimeValues[clockFieldSelected] - 1;
+    // Year - just block!
+    if (clockFieldSelected == 2 && adjustTimeValues[clockFieldSelected] < 0){
+      adjustTimeValues[clockFieldSelected]=0;
+    }
+    // Month
+    else if (clockFieldSelected == 1 && adjustTimeValues[clockFieldSelected] < 0) {
+      adjustTimeValues[clockFieldSelected] = 12;
+    }
+    // Day
+    else if (clockFieldSelected == 0 && adjustTimeValues[clockFieldSelected] < 0) {
+      adjustTimeValues[clockFieldSelected] = 31;
+    }
+    // Hour
+    else if (clockFieldSelected == 3 && adjustTimeValues[clockFieldSelected]  < 0) {
+      adjustTimeValues[clockFieldSelected] = 23;
+    }
+    // min
+    else if (clockFieldSelected == 4 && adjustTimeValues[clockFieldSelected]  < 0) {
+      adjustTimeValues[clockFieldSelected] = 59;
+    }
+    // sec
+    else if (clockFieldSelected == 5 && adjustTimeValues[clockFieldSelected]  < 0) {
+      adjustTimeValues[clockFieldSelected] = 59;
+    }
     Serial.println("Button3 was pressed");
+    Serial.print("Counter value");
+    Serial.println(adjustTimeValues[clockFieldSelected]);
     btn3Pressed = false;
   }
   if (btn4Pressed)
   {
+    adjustTimeValues[clockFieldSelected] = adjustTimeValues[clockFieldSelected] + 1;
+    // Month
+    if (clockFieldSelected == 1 && adjustTimeValues[clockFieldSelected] > 12) {
+      adjustTimeValues[clockFieldSelected] = 0;
+    }
+    // Day
+    else if (clockFieldSelected == 0 && adjustTimeValues[clockFieldSelected] > 31) {
+      adjustTimeValues[clockFieldSelected] = 0;
+    }
+    // Hour
+    else if (clockFieldSelected == 3 && adjustTimeValues[clockFieldSelected] > 23) {
+      adjustTimeValues[clockFieldSelected] = 0;
+    }
+    // min
+    else if (clockFieldSelected == 4 && adjustTimeValues[clockFieldSelected] > 59) {
+      adjustTimeValues[clockFieldSelected] = 0;
+    }
+    // sec
+    else if (clockFieldSelected == 5 && adjustTimeValues[clockFieldSelected] > 59) {
+      adjustTimeValues[clockFieldSelected] = 0;
+    }
     Serial.println("Button4 was pressed");
+    Serial.print("Counter value");
+    Serial.println(adjustTimeValues[clockFieldSelected]);
     btn4Pressed = false;
   }
 }
