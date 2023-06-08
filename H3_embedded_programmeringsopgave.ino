@@ -127,23 +127,30 @@ void displayDHTData(){
   display.clearDisplay();
   char str[] = "";
   displayTextCenter("Temperature", 0, 0, 1);
-  sprintf(str, "%d,%02dC", (int)tempC, (int)(tempC*100)%100);
+  sprintf(str, "%d,%02d", (int)tempC, (int)(tempC*100)%100);
   displayTextCenter(str, 0, 10, 2);
+  // Draw the degree symbol, by getting the current cursor position
+  display.drawCircle(display.getCursorX()+3, display.getCursorY(), 2, WHITE);
+  display.setCursor(display.getCursorX()+6,display.getCursorY());
+  display.print("C");
 
   displayTextCenter("Humidity", 0, 35, 1);
   sprintf(str, "%d", (int)humidity);
   Serial.println(str);
   displayTextCenter(str, 0, 45, 2);
+  display.print('%');
   display.display();
 }
 
 void displayDateTime(){
   display.clearDisplay();
   char str[32];
+  displayTextCenter("Date", 0, 0, 1);
   sprintf(str, "%02d/%02d/%02d", currentTime.year(), currentTime.month(), currentTime.day());
-  displayTextCenter(str, 0, 0, 2);
+  displayTextCenter(str, 0, 10, 2);
+  displayTextCenter("Time", 0, 35, 1);
   sprintf(str, "%02d:%02d:%02d",  currentTime.hour(), currentTime.minute(), currentTime.second());
-  displayTextCenter(str, 0, 20, 2);
+  displayTextCenter(str, 0, 45, 2);
   display.display();
 }
 
@@ -152,7 +159,7 @@ void displayTextCenter(char str[], int x, int y, int textSize){
 	display.setTextColor(WHITE); // Draw white text
   int offset = getOffset(str, &x, &textSize);
 	display.setCursor(offset,y); // Start at top-left corner
-	display.println(str);
+	display.print(str);
 }
 
 int getOffset(char str[], int *width, int *textSize){
