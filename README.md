@@ -1,3 +1,4 @@
+<a name="readme-top"></a>
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -31,14 +32,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 Simple project to display temperature, humidity and Current date and time on a 126x64 OLED display.
 The program have a menu, where you can switch between the modes, and you can even change the time.
 
 The project is build on a Arduino Zero board.
-
-Use the `BLANK_README.md` to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -51,11 +48,15 @@ Here are the libaries used in this project, these libaries is a must have, to be
 * [RTClib](https://github.com/adafruit/RTClib) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
 * [DHT sensor library](https://github.com/adafruit/DHT-sensor-library) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 To get started, you will need to download a copy of this repository, install all the libaries and connect all the electronic modules to the arduino Zero.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Diagram / connection diagram
 This diagram shows how to connect the different modules / components to the Arduino Zero.
@@ -145,6 +146,7 @@ DHT11
   </li>
 </ul>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -155,7 +157,13 @@ When everything is compiled and uploaded to the Arduino Zero. Then we can look a
 * Button #2: Opens the selected menuitem in the main menu, and switches between date and time fields, in the "Adjust clock" submenu
 * Button #3: Minus button, only used in "Adjust clock"
 * Button #4: Plus button, only used in "Adjust clock"
+
+<br/>
+
 <a href="https://drive.google.com/file/d/10SVQtopmocVgzpvfo7NzjtsbAOlmKM0t/view?usp=sharing" title="How to use"><img src="images/usage_video.jpg" alt="Alternate Text" /></a>
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <br/>
 
@@ -166,6 +174,8 @@ List of current features
 - [x] Display Temperature & Humidity
 - [x] Display Switch between displaying "Date & Time" and "Temperature & Humidity" every 3 seconds
 - [x] Adjust Date and Time
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <br/>
 
@@ -229,3 +239,5 @@ int getOffset(char str[], int *width, int *textSize){
   return ((SCREEN_WIDTH - *width) / 2 ) - (strlen(str)*(6*(*textSize)) / 2);
 }
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
