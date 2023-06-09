@@ -191,8 +191,12 @@ List of current features
 
 ## Changelog
 
+08/06/2023
 - Added changelog :)
 - Added utils.h file
+
+09/06/2023
+- Added display selection when adjusting datetime.
 
 <br/>
 
