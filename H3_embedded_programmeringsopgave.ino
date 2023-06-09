@@ -1,23 +1,6 @@
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#include <EasyButton.h>
-#include "RTClib.h"
-#include "DHT.h"
+#include "utils.h"
 
-// ######## OLED ########
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-#define OLED_RESET 5 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-#define BTN1_PIN 2
-#define BTN2_PIN 3
-#define BTN3_PIN 4
-#define BTN4_PIN 5
 
 EasyButton btn1(BTN1_PIN);
 EasyButton btn2(BTN2_PIN);
@@ -55,8 +38,6 @@ int updateDatetimeDelay = 1000; // milli Seconds
 unsigned int lastDateTimeUpdate = 0;
 DateTime currentTime; // Stores the time read from the clock module
 
-#define DHTPIN 12     // Digital pin connected to the DHT sensor
-#define DHTTYPE DHT11   // DHT 11
 // Initialize DHT sensor.
 DHT dht(DHTPIN, DHTTYPE);
 int updateDHTDelay = 1000; // milli Seconds
@@ -483,13 +464,4 @@ void displayTextCenter(char str[], int x, int y, int textSize){
   int offset = getOffset(str, &x, &textSize);
 	display.setCursor(offset,y); // Start at top-left corner
 	display.print(str);
-}
-
-int getOffset(char str[], int *width, int *textSize){
-  // We fist calculate the midle of the area
-  // then we take the text size and multiply the size by 6, because 1 = 6 pixels
-  // when we have pixel by char, the we multiply the string length with the pixels
-  // then we divide by 2, to get the middle of the word, and then we extract that
-  // from the screen area, we extract the string middle, and get the offset.
-  return ((SCREEN_WIDTH - *width) / 2 ) - (strlen(str)*(6*(*textSize)) / 2);
 }

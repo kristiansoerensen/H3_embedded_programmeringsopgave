@@ -180,6 +180,13 @@ List of current features
 
 <br/>
 
+## Changelog
+
+- Added changelog :)
+- Added utils.h file
+
+<br/>
+
 ## Code description
 Some code explanation
 
