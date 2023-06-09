@@ -265,20 +265,28 @@ void displayAdjustClock() {
   display.setCursor(0,10);
   display.setTextSize(2);
   for (int i = 0; i < 3; i++){
-    // if (i == clockFieldSelected){
-    //   display.setTextColor(BLACK);
-    // }
-    // else {
-    //   display.setTextColor(WHITE);
-    // }
+    if (i == clockFieldSelected){
+      display.setTextColor(BLACK);
+      if (i == 2){
+        display.fillRoundRect(display.getCursorX()-1, display.getCursorY()-1, 48, 16, 0, WHITE);
+      }
+      else {
+        display.fillRoundRect(display.getCursorX()-1, display.getCursorY()-1, 24, 16, 0, WHITE);
+      }
+    }
+    else {
+      display.setTextColor(WHITE);
+    }
     sprintf(str, "%02d", adjustTimeValues[i]);
     display.print(str);
     if (i < 2){
+      display.setTextColor(WHITE);
       display.print("/");
     } 
   }
 
   display.setTextSize(1);
+  display.setTextColor(WHITE);
   display.setCursor(0,35);
   display.print("Time:");
 
@@ -286,15 +294,17 @@ void displayAdjustClock() {
   display.setCursor(0,45);
 
   for (int i = 3; i < 6; i++){
-    // if (i == clockFieldSelected){
-    //   display.setTextColor(BLACK);
-    // }
-    // else {
-    //   display.setTextColor(WHITE);
-    // }
+    if (i == clockFieldSelected){
+      display.setTextColor(BLACK);
+      display.fillRoundRect(display.getCursorX()-1, display.getCursorY()-1, 24, 16, 0, WHITE);
+    }
+    else {
+      display.setTextColor(WHITE);
+    }
     sprintf(str, "%02d", adjustTimeValues[i]);
     display.print(str);
     if (i < 5){
+      display.setTextColor(WHITE);
       display.print(":");
     } 
   }
