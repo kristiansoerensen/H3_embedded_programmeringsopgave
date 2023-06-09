@@ -43,10 +43,11 @@ The project is build on a Arduino Zero board.
 
 Here are the libaries used in this project, these libaries is a must have, to be able to run the program, please remember to install the dependencies!
 
-* [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
-* [EasyButton](https://easybtn.earias.me/) by [Evert Arias](https://github.com/evert-arias)
-* [RTClib](https://github.com/adafruit/RTClib) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
-* [DHT sensor library](https://github.com/adafruit/DHT-sensor-library) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
+* [Adafruit SSD1306 2.5.7](https://github.com/adafruit/Adafruit_SSD1306) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
+* [Adafruit GFX Library 1.11.5](https://github.com/adafruit/Adafruit-GFX-Library) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
+* [EasyButton 2.0.1](https://easybtn.earias.me/) by [Evert Arias](https://github.com/evert-arias)
+* [RTClib 2.2.1](https://github.com/adafruit/RTClib) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
+* [DHT sensor library 1.4.4](https://github.com/adafruit/DHT-sensor-library) by [Adafruit](https://www.arduinolibraries.info/authors/adafruit)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
