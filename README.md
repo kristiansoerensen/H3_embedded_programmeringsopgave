@@ -149,6 +149,14 @@ DHT11
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Requirements
+
+- 4x Buttons
+- 1x <a href="https://ardustore.dk/produkt/ds3231-i2c-real-time-clock-module">Clock module - DS3231</a>
+-1x <a href="https://ardustore.dk/produkt/display-oled-0-96%e2%80%b3-i2c-128x64-module-hvid">Display OLED 0.96″ I2C 128×64 Module – Hvid</a>
+- 1x <a href="https://ilearn.eucsyd.dk/pluginfile.php/679724/mod_resource/content/1/DHT11.pdf">DHT11</a>
+- 1x <a href="https://store.arduino.cc/products/arduino-zero">Arduino Zero</a>
+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
@@ -175,6 +183,7 @@ List of current features
 - [x] Display Temperature & Humidity
 - [x] Display Switch between displaying "Date & Time" and "Temperature & Humidity" every 3 seconds
 - [x] Adjust Date and Time
+- [ ] Show selected datetime field in adjust clock 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -249,3 +258,6 @@ int getOffset(char str[], int *width, int *textSize){
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Inspirations
+Some inspiration to main menu: [yilmazyurdakul](https://projecthub.arduino.cc/yilmazyurdakul/arduino-oled-encoder-simple-menu-system-e998b8)

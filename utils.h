@@ -17,9 +17,9 @@
 #define DHTTYPE DHT11   // DHT 11
 
 // Buttons
-#define BTN1_PIN 2
-#define BTN2_PIN 3
-#define BTN3_PIN 4
-#define BTN4_PIN 5
+#define BTN1_PIN 2 // Main menu menuitem selector
+#define BTN2_PIN 3 // Main menu click on selected menuitem or datetime shifter
+#define BTN3_PIN 4 // Misnus button for adjust datetime
+#define BTN4_PIN 5 // 
 
 int getOffset(char str[],int *width,int *textSize);
