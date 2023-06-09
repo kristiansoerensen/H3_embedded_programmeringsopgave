@@ -69,7 +69,7 @@ The DHT11 module does only have 3 Pins in our project, thats why the diagram doe
 <br/>
 DHT11
 
-<img src="images/dht11_pinout.png" alt="DHT11">
+<img src="images/dht11_pinout.PNG" alt="DHT11">
 <br/>
 
 ### Component list and pin connection
